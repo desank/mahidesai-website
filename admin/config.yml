@@ -3,9 +3,6 @@ backend:
   name: github
   repo: desank/mahidesai-website
   branch: main
-  # SETUP STEP: after the Cloudflare worker is deployed, replace the URL below
-  # with the worker URL. Edit this file on github.com (pencil icon).
-  base_url: https://REPLACE-ME.workers.dev
 
 publish_mode: editorial_workflow
 site_url: https://mahidesai.nz
