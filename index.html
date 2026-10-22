@@ -1,110 +1,265 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="light dark">
-  <meta name="description" content="A quiet corner of the internet for things Mahi makes. Coming soon.">
-  <title>Mahi</title>
-  <style>
-    :root {
-      color-scheme: light;
-      --page: #f7f6f4;
-      --heading: #191817;
-      --body: #5c5a56;
-      --accent: #b4552d;
-      --glyph-bg: #ffffff;
-      --glyph-border: #e6e2dc;
-      --glyph-shadow: 0 1px 2px rgb(25 24 23 / 7%);
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mahi</title>
+<meta name="description" content="A quiet corner of the internet for things Mahi makes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#faf5ec;
+    --bg-dot:#eadfcd;
+    --ink:#2e2a26;
+    --ink-soft:#6f675c;
+    --mat:#fffdf8;
+    --tape:rgba(255,214,102,.55);
+    --accent:#e4572e;
+    --shadow:rgba(46,42,38,.18);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#17141c;
+      --bg-dot:#241f2e;
+      --ink:#f3ede3;
+      --ink-soft:#a99f93;
+      --mat:#fdfaf3;
+      --tape:rgba(255,214,102,.35);
+      --accent:#ff8a5c;
+      --shadow:rgba(0,0,0,.55);
     }
-
-    * { box-sizing: border-box; }
-
-    html, body { min-height: 100%; }
-
-    body {
-      min-height: 100vh;
-      min-height: 100svh;
-      margin: 0;
-      background: var(--page);
-      color: var(--heading);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
-    }
-
-    main {
-      min-height: 100vh;
-      min-height: 100svh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-    }
-
-    .content {
-      width: 100%;
-      max-width: 370px;
-      text-align: center;
-    }
-
-    .mark {
-      width: 44px;
-      height: 44px;
-      margin: 0 auto 32px;
-      display: grid;
-      place-items: center;
-      border: 1px solid var(--glyph-border);
-      border-radius: 12px;
-      background: var(--glyph-bg);
-      box-shadow: var(--glyph-shadow);
-      color: var(--accent);
-    }
-
-    .mark svg { display: block; width: 20px; height: 20px; }
-
-    h1 {
-      margin: 0 0 18px;
-      font-size: 32px;
-      line-height: 1.2;
-      letter-spacing: -0.55px;
-      font-weight: 700;
-    }
-
-    .description {
-      max-width: 370px;
-      margin: 0 auto;
-      color: var(--body);
-      font-size: 17px;
-      line-height: 28px;
-      font-weight: 400;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        color-scheme: dark;
-        --page: #121110;
-        --heading: #f2f0ed;
-        --body: #a5a19b;
-        --accent: #e08a5f;
-        --glyph-bg: #1c1a18;
-        --glyph-border: #2c2926;
-        --glyph-shadow: none;
-      }
-    }
-  </style>
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Baloo 2",system-ui,sans-serif;
+    color:var(--ink);
+    background:var(--bg);
+    background-image:radial-gradient(var(--bg-dot) 1.5px, transparent 1.5px);
+    background-size:22px 22px;
+    min-height:100vh;
+  }
+  header{
+    text-align:center;
+    padding:56px 20px 30px;
+  }
+  h1{
+    font-size:clamp(3rem,12vw,5.5rem);
+    font-weight:800;
+    letter-spacing:.02em;
+    line-height:1;
+    display:inline-block;
+    position:relative;
+  }
+  h1 .dot{color:var(--accent)}
+  .scribble{
+    display:block;
+    margin:6px auto 0;
+    width:min(220px,55vw);
+  }
+  .tagline{
+    font-family:"Caveat",cursive;
+    font-size:clamp(1.3rem,5vw,1.8rem);
+    color:var(--ink-soft);
+    margin-top:14px;
+  }
+  .gallery-note{
+    margin-top:6px;
+    font-size:.95rem;
+    color:var(--ink-soft);
+    font-weight:500;
+  }
+  main{
+    max-width:1200px;
+    margin:0 auto;
+    padding:10px 16px 40px;
+  }
+  .gallery{
+    columns:2;
+    column-gap:14px;
+  }
+  @media (min-width:640px){ .gallery{columns:3; column-gap:18px} }
+  @media (min-width:980px){ .gallery{columns:4; column-gap:20px} }
+  figure{
+    break-inside:avoid;
+    margin:8px 0 18px;
+    background-color:var(--mat);
+    background-image:linear-gradient(var(--tape), var(--tape));
+    background-repeat:no-repeat;
+    background-size:84px 24px;
+    background-position:center 0;
+    padding:26px 10px 34px;
+    border-radius:6px;
+    box-shadow:0 6px 18px var(--shadow), 0 1px 3px var(--shadow);
+    position:relative;
+    cursor:zoom-in;
+    transition:transform .25s ease, box-shadow .25s ease;
+  }
+  @media (min-width:640px){ figure{margin:8px 0 20px} }
+  @media (min-width:980px){ figure{margin:8px 0 22px} }
+  figure:nth-child(3n+1){transform:rotate(-1.4deg)}
+  figure:nth-child(3n+2){transform:rotate(1.1deg)}
+  figure:nth-child(3n){transform:rotate(-.6deg)}
+  figure:hover, figure:focus-visible{
+    transform:rotate(0deg) scale(1.03);
+    box-shadow:0 14px 30px var(--shadow);
+    z-index:3;
+  }
+  figure img{
+    width:100%;
+    height:auto;
+    display:block;
+    border-radius:3px;
+  }
+  figcaption{
+    position:absolute;
+    left:0;right:0;bottom:6px;
+    text-align:center;
+    font-family:"Caveat",cursive;
+    font-size:1.15rem;
+    color:#6f675c;
+  }
+  footer{
+    text-align:center;
+    padding:24px 20px 48px;
+    color:var(--ink-soft);
+    font-size:.95rem;
+    font-weight:500;
+  }
+  footer .heart{color:var(--accent)}
+  /* Lightbox */
+  .lightbox{
+    position:fixed;
+    inset:0;
+    background:rgba(12,10,16,.92);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    z-index:50;
+    padding:16px;
+  }
+  .lightbox.open{display:flex}
+  .lightbox img{
+    max-width:100%;
+    max-height:78vh;
+    border-radius:6px;
+    box-shadow:0 20px 60px rgba(0,0,0,.6);
+  }
+  .lightbox .lb-cap{
+    font-family:"Caveat",cursive;
+    font-size:1.6rem;
+    color:#f3ede3;
+    margin-top:14px;
+    text-align:center;
+  }
+  .lb-btn{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    background:rgba(255,255,255,.12);
+    color:#fff;
+    border:none;
+    font-size:2rem;
+    line-height:1;
+    width:52px;height:52px;
+    border-radius:50%;
+    cursor:pointer;
+    transition:background .2s;
+  }
+  .lb-btn:hover{background:rgba(255,255,255,.28)}
+  .lb-prev{left:10px}
+  .lb-next{right:10px}
+  .lb-close{
+    position:absolute;
+    top:14px;right:14px;
+    transform:none;
+    font-size:1.4rem;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important; scroll-behavior:auto}
+  }
+</style>
 </head>
 <body>
+  <header>
+    <h1>Mahi<span class="dot">.</span></h1>
+    <svg class="scribble" viewBox="0 0 220 14" aria-hidden="true">
+      <path d="M4 9 C 40 2, 70 13, 110 7 S 180 3, 216 8" fill="none" stroke="#e4572e" stroke-width="4" stroke-linecap="round"/>
+    </svg>
+    <p class="tagline">A quiet corner of the internet for things Mahi makes.</p>
+    <p class="gallery-note">The gallery is open. Tap anything to see it big.</p>
+  </header>
   <main>
-    <section class="content" aria-labelledby="page-title">
-      <div class="mark" aria-hidden="true">
-        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M10 2.5c.6 4.2 3.3 6.9 7.5 7.5-4.2.6-6.9 3.3-7.5 7.5-.6-4.2-3.3-6.9-7.5-7.5 4.2-.6 6.9-3.3 7.5-7.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
-        </svg>
-      </div>
-      <h1 id="page-title">Mahi</h1>
-      <p class="description">A quiet corner of the internet for things Mahi makes. Coming soon.</p>
-    </section>
+    <div class="gallery" id="gallery">
+      <figure data-title="Disney Place"><img src="images/g-disney.jpg" width="1600" height="1104" loading="lazy" alt="Colourful drawing of a little house on top of a spotted hill with a flag that reads Disney Place, surrounded by trees and stars"></figure>
+      <figure data-title="Girl in Green"><img src="images/g-girl.jpg" width="1104" height="1600" loading="lazy" alt="Green marker drawing of a girl with big eyes, curly bunches and a striped dress"></figure>
+      <figure data-title="Big Bloom"><img src="images/g-flower.jpg" width="1200" height="1600" loading="lazy" alt="Painting of a big striped flower with the sun and moon above and small flowers below"></figure>
+      <figure data-title="Night Sky"><img src="images/g-sky.jpg" width="1600" height="860" loading="lazy" alt="Paint-splattered night sky in yellow, blue and purple over white paper hills and trees"></figure>
+      <figure data-title="Hamstle"><img src="images/g-hamster.jpg" width="1200" height="1600" loading="lazy" alt="Pencil drawing of a round apple-coloured hamster with labelled whiskers, hands, eyes, legs and mouth"></figure>
+      <figure data-title="Sloth Family"><img src="images/g-sloths.jpg" width="1600" height="1200" loading="lazy" alt="Four paintings of sloths hanging from branches in green jungles, lined up in a row"></figure>
+      <figure data-title="Which Princess is Which?"><img src="images/g-princess.jpg" width="1600" height="1200" loading="lazy" alt="Drawing of four princesses in colourful dresses under the words Which Princess is Which"></figure>
+      <figure data-title="Under the Stars"><img src="images/g-stars.jpg" width="1200" height="1600" loading="lazy" alt="Drawing of two girls holding a big red flower under a sky full of yellow stars"></figure>
+      <figure data-title="Love You Berry Much"><img src="images/g-berry.jpg" width="900" height="1600" loading="lazy" alt="Card with two smiling strawberries and the words Dad, I love you berry much"></figure>
+      <figure data-title="Family"><img src="images/g-family.jpg" width="1200" height="1488" loading="lazy" alt="Black marker family drawing with patterned shapes, hearts and the words Mummy, Daddy and Mahi"></figure>
+    </div>
   </main>
+  <footer>made with <span class="heart">&hearts;</span> by Mahi</footer>
+
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Artwork viewer">
+    <button class="lb-btn lb-close" id="lbClose" aria-label="Close">&#10005;</button>
+    <button class="lb-btn lb-prev" id="lbPrev" aria-label="Previous">&#8249;</button>
+    <img id="lbImg" src="" alt="">
+    <p class="lb-cap" id="lbCap"></p>
+    <button class="lb-btn lb-next" id="lbNext" aria-label="Next">&#8250;</button>
+  </div>
+
+<script>
+(function(){
+  var figs = Array.prototype.slice.call(document.querySelectorAll('#gallery figure'));
+  var lb = document.getElementById('lightbox');
+  var lbImg = document.getElementById('lbImg');
+  var lbCap = document.getElementById('lbCap');
+  var current = 0;
+  function open(i){
+    current = (i + figs.length) % figs.length;
+    var img = figs[current].querySelector('img');
+    lbImg.src = img.src;
+    lbImg.alt = img.alt;
+    lbCap.textContent = figs[current].getAttribute('data-title');
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function close(){
+    lb.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  figs.forEach(function(fig, i){
+    fig.setAttribute('tabindex','0');
+    fig.addEventListener('click', function(){ open(i); });
+    fig.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); open(i); }});
+  });
+  document.getElementById('lbClose').addEventListener('click', close);
+  document.getElementById('lbPrev').addEventListener('click', function(e){ e.stopPropagation(); open(current-1); });
+  document.getElementById('lbNext').addEventListener('click', function(e){ e.stopPropagation(); open(current+1); });
+  lb.addEventListener('click', function(e){ if(e.target===lb) close(); });
+  document.addEventListener('keydown', function(e){
+    if(!lb.classList.contains('open')) return;
+    if(e.key==='Escape') close();
+    if(e.key==='ArrowLeft') open(current-1);
+    if(e.key==='ArrowRight') open(current+1);
+  });
+  var touchX = null;
+  lb.addEventListener('touchstart', function(e){ touchX = e.changedTouches[0].clientX; }, {passive:true});
+  lb.addEventListener('touchend', function(e){
+    if(touchX===null) return;
+    var dx = e.changedTouches[0].clientX - touchX;
+    if(Math.abs(dx) > 50) open(current + (dx < 0 ? 1 : -1));
+    touchX = null;
+  }, {passive:true});
+})();
+</script>
 </body>
 </html>
