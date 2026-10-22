@@ -25,6 +25,11 @@
     <nav class="nav" aria-label="Site"><a href="index.html" aria-current="page">Gallery</a><a href="books.html">Books</a></nav>
   </header>
   <main>
+    <section class="featured" id="featured" hidden>
+      <p class="f-tag">&#9733; Drawing of the month</p>
+      <figure id="fFig"></figure>
+      <p class="f-cap" id="fCap"></p>
+    </section>
     <div class="gallery" id="gallery">
       <figure data-title="Disney Place"><img src="images/g-disney.jpg" width="1600" height="1104" loading="lazy" alt="Colourful drawing of a little house on top of a spotted hill with a flag that reads Disney Place, surrounded by trees and stars"></figure>
       <figure data-title="Girl in Green"><img src="images/g-girl.jpg" width="1104" height="1600" loading="lazy" alt="Green marker drawing of a girl with big eyes, curly bunches and a striped dress"></figure>
@@ -45,52 +50,89 @@
     <button class="lb-btn lb-prev" id="lbPrev" aria-label="Previous">&#8249;</button>
     <img id="lbImg" src="" alt="">
     <p class="lb-cap" id="lbCap"></p>
+    <p class="lb-sub" id="lbSub"></p>
     <button class="lb-btn lb-next" id="lbNext" aria-label="Next">&#8250;</button>
   </div>
 
 <script>
 (function(){
-  var figs = Array.prototype.slice.call(document.querySelectorAll('#gallery figure'));
-  var lb = document.getElementById('lightbox');
-  var lbImg = document.getElementById('lbImg');
-  var lbCap = document.getElementById('lbCap');
-  var current = 0;
-  function open(i){
-    current = (i + figs.length) % figs.length;
-    var img = figs[current].querySelector('img');
-    lbImg.src = img.src;
-    lbImg.alt = img.alt;
-    lbCap.textContent = figs[current].getAttribute('data-title');
-    lb.classList.add('open');
-    document.body.style.overflow = 'hidden';
+  var DATA = {drawing_of_the_month:'', captions:{}};
+  function idOf(src){
+    var m = (src||'').match(/images\/([^.\/]+)\.jpg/);
+    return m ? m[1] : '';
   }
-  function close(){
-    lb.classList.remove('open');
-    document.body.style.overflow = '';
+  function init(){
+    var figs = Array.prototype.slice.call(document.querySelectorAll('#gallery figure'));
+    var lb = document.getElementById('lightbox');
+    var lbImg = document.getElementById('lbImg');
+    var lbCap = document.getElementById('lbCap');
+    var lbSub = document.getElementById('lbSub');
+    var current = 0;
+    function open(i){
+      current = (i + figs.length) % figs.length;
+      var img = figs[current].querySelector('img');
+      lbImg.src = img.src;
+      lbImg.alt = img.alt;
+      lbCap.textContent = figs[current].getAttribute('data-title');
+      var cap = DATA.captions[idOf(img.getAttribute('src'))] || '';
+      lbSub.textContent = cap;
+      lbSub.style.display = cap ? '' : 'none';
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function close(){
+      lb.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    // Drawing of the month: pin a copy at the top, tapping it opens the original.
+    var dotm = DATA.drawing_of_the_month;
+    if(dotm){
+      for(var i=0;i<figs.length;i++){
+        var im = figs[i].querySelector('img');
+        if(idOf(im.getAttribute('src'))===dotm){
+          var fFig = document.getElementById('fFig');
+          var cap = DATA.captions[dotm] || '';
+          fFig.appendChild(im.cloneNode(true));
+          fFig.setAttribute('data-title', figs[i].getAttribute('data-title'));
+          fFig.setAttribute('tabindex','0');
+          document.getElementById('fCap').textContent = cap;
+          document.getElementById('featured').hidden = false;
+          (function(idx){
+            fFig.addEventListener('click', function(){ open(idx); });
+            fFig.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); open(idx); }});
+          })(i);
+          break;
+        }
+      }
+    }
+    figs.forEach(function(fig, i){
+      fig.setAttribute('tabindex','0');
+      fig.addEventListener('click', function(){ open(i); });
+      fig.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); open(i); }});
+    });
+    document.getElementById('lbClose').addEventListener('click', close);
+    document.getElementById('lbPrev').addEventListener('click', function(e){ e.stopPropagation(); open(current-1); });
+    document.getElementById('lbNext').addEventListener('click', function(e){ e.stopPropagation(); open(current+1); });
+    lb.addEventListener('click', function(e){ if(e.target===lb) close(); });
+    document.addEventListener('keydown', function(e){
+      if(!lb.classList.contains('open')) return;
+      if(e.key==='Escape') close();
+      if(e.key==='ArrowLeft') open(current-1);
+      if(e.key==='ArrowRight') open(current+1);
+    });
+    var touchX = null;
+    lb.addEventListener('touchstart', function(e){ touchX = e.changedTouches[0].clientX; }, {passive:true});
+    lb.addEventListener('touchend', function(e){
+      if(touchX===null) return;
+      var dx = e.changedTouches[0].clientX - touchX;
+      if(Math.abs(dx) > 50) open(current + (dx < 0 ? 1 : -1));
+      touchX = null;
+    }, {passive:true});
   }
-  figs.forEach(function(fig, i){
-    fig.setAttribute('tabindex','0');
-    fig.addEventListener('click', function(){ open(i); });
-    fig.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); open(i); }});
-  });
-  document.getElementById('lbClose').addEventListener('click', close);
-  document.getElementById('lbPrev').addEventListener('click', function(e){ e.stopPropagation(); open(current-1); });
-  document.getElementById('lbNext').addEventListener('click', function(e){ e.stopPropagation(); open(current+1); });
-  lb.addEventListener('click', function(e){ if(e.target===lb) close(); });
-  document.addEventListener('keydown', function(e){
-    if(!lb.classList.contains('open')) return;
-    if(e.key==='Escape') close();
-    if(e.key==='ArrowLeft') open(current-1);
-    if(e.key==='ArrowRight') open(current+1);
-  });
-  var touchX = null;
-  lb.addEventListener('touchstart', function(e){ touchX = e.changedTouches[0].clientX; }, {passive:true});
-  lb.addEventListener('touchend', function(e){
-    if(touchX===null) return;
-    var dx = e.changedTouches[0].clientX - touchX;
-    if(Math.abs(dx) > 50) open(current + (dx < 0 ? 1 : -1));
-    touchX = null;
-  }, {passive:true});
+  fetch('data/drawings.json').then(function(r){ return r.ok ? r.json() : null; }).then(function(d){
+    if(d){ DATA.drawing_of_the_month = d.drawing_of_the_month || ''; DATA.captions = d.captions || {}; }
+    init();
+  }).catch(function(){ init(); });
 })();
 </script>
 </body>

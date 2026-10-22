@@ -24,19 +24,48 @@
   </header>
   <main>
     <section class="note">
-      <h2>The book shelf is coming soon</h2>
-      <p>I love getting lost in a good story. This is where I'll keep track of the books I finish.</p>
-      <p>Every book gets one little entry: the title, a star rating, and one sentence about why I felt that way.</p>
-      <div class="example" aria-label="Example of an entry">
+      <h2 id="noteTitle">The book shelf is coming soon</h2>
+      <p id="noteP1">I love getting lost in a good story. This is where I'll keep track of the books I finish.</p>
+      <p id="noteP2">Every book gets one little entry: the title, a star rating, and one sentence about why I felt that way.</p>
+      <div class="example" id="exampleCard" aria-label="Example of an entry">
         <p class="tag">Here's how it will look</p>
         <p class="t">Book title goes here</p>
         <p class="s" aria-label="Five out of five stars">&#9733;&#9733;&#9733;&#9733;&#9733;</p>
         <p class="w">One sentence about why I loved it.</p>
       </div>
-      <p>No spoilers, promise. Check back soon!</p>
+      <p id="noteP3">No spoilers, promise. Check back soon!</p>
       <p class="hand">- Mahi</p>
     </section>
+    <section class="shelf" id="shelf" aria-label="Book shelf"></section>
   </main>
   <footer>made with <span class="heart">&hearts;</span> by Mahi</footer>
+
+<script>
+(function(){
+  fetch('data/books.json').then(function(r){ return r.ok ? r.json() : null; }).then(function(d){
+    var books = (d && d.books) ? d.books : [];
+    if(!books.length) return;
+    document.getElementById('noteTitle').textContent = 'The book shelf';
+    document.getElementById('exampleCard').style.display = 'none';
+    document.getElementById('noteP3').style.display = 'none';
+    var shelf = document.getElementById('shelf');
+    books.forEach(function(b){
+      var n = Math.max(0, Math.min(5, parseInt(b.stars, 10) || 0));
+      var el = document.createElement('div'); el.className = 'entry';
+      var t = document.createElement('p'); t.className = 't'; t.textContent = b.title || '';
+      var s = document.createElement('p'); s.className = 's'; s.setAttribute('aria-label', n + ' out of 5 stars');
+      for(var i=1;i<=5;i++){
+        var sp = document.createElement('span');
+        if(i>n) sp.className = 'off';
+        sp.textContent = '\u2605';
+        s.appendChild(sp);
+      }
+      var w = document.createElement('p'); w.className = 'w'; w.textContent = b.why || '';
+      el.appendChild(t); el.appendChild(s); el.appendChild(w);
+      shelf.appendChild(el);
+    });
+  }).catch(function(){});
+})();
+</script>
 </body>
 </html>

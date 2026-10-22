@@ -1,0 +1,82 @@
+# Mahi's edit studio - Sveltia CMS v0.250.1 (pinned, self-hosted in this folder)
+backend:
+  name: github
+  repo: desank/mahidesai-website
+  branch: main
+  # SETUP STEP: after the Cloudflare worker is deployed, replace the URL below
+  # with the worker URL. Edit this file on github.com (pencil icon).
+  base_url: https://REPLACE-ME.workers.dev
+
+publish_mode: editorial_workflow
+site_url: https://mahidesai.nz
+locale: en
+media_folder: images
+
+collections:
+  - name: books
+    label: Book shelf
+    files:
+      - name: books
+        label: Books
+        file: data/books.json
+        description: One little entry per finished book.
+        fields:
+          - name: books
+            label: Books
+            label_singular: book
+            widget: list
+            summary: "{{fields.title}}"
+            fields:
+              - name: title
+                label: Book title
+                widget: string
+              - name: stars
+                label: Stars out of 5
+                widget: number
+                value_type: int
+                min: 1
+                max: 5
+                default: 5
+              - name: why
+                label: One sentence about why
+                widget: text
+  - name: gallery
+    label: Gallery
+    files:
+      - name: drawings
+        label: Drawings
+        file: data/drawings.json
+        description: Pin the drawing of the month and add a caption to any drawing.
+        fields:
+          - name: drawing_of_the_month
+            label: Drawing of the month
+            widget: select
+            required: false
+            default: ""
+            options:
+              - {label: "None", value: ""}
+              - {label: "Disney Place", value: "g-disney"}
+              - {label: "Girl in Green", value: "g-girl"}
+              - {label: "Big Bloom", value: "g-flower"}
+              - {label: "Night Sky", value: "g-sky"}
+              - {label: "Hamstle", value: "g-hamster"}
+              - {label: "Sloth Family", value: "g-sloths"}
+              - {label: "Which Princess is Which?", value: "g-princess"}
+              - {label: "Under the Stars", value: "g-stars"}
+              - {label: "Love You Berry Much", value: "g-berry"}
+              - {label: "Family", value: "g-family"}
+          - name: captions
+            label: Captions (shown when someone taps a drawing)
+            widget: object
+            collapsed: true
+            fields:
+              - {name: g-disney, label: "Disney Place", widget: string, required: false}
+              - {name: g-girl, label: "Girl in Green", widget: string, required: false}
+              - {name: g-flower, label: "Big Bloom", widget: string, required: false}
+              - {name: g-sky, label: "Night Sky", widget: string, required: false}
+              - {name: g-hamster, label: "Hamstle", widget: string, required: false}
+              - {name: g-sloths, label: "Sloth Family", widget: string, required: false}
+              - {name: g-princess, label: "Which Princess is Which?", widget: string, required: false}
+              - {name: g-stars, label: "Under the Stars", widget: string, required: false}
+              - {name: g-berry, label: "Love You Berry Much", widget: string, required: false}
+              - {name: g-family, label: "Family", widget: string, required: false}
