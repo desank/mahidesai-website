@@ -3,6 +3,7 @@ backend:
   name: github
   repo: desank/mahidesai-website
   branch: main
+  base_url: https://sveltia-cms-auth.desank.workers.dev
 
 publish_mode: editorial_workflow
 site_url: https://mahidesai.nz
