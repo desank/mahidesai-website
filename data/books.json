@@ -1,9 +1,3 @@
 {
-  "books": [
-    {
-      "title": "Once upon a time",
-      "stars": 5,
-      "why": "First test!"
-    }
-  ]
+  "books": []
 }
